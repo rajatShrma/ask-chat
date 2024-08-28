@@ -9,7 +9,7 @@ client = anthropic.Anthropic(
     api_key=os.getenv('CLAUDE_API')
 )
 
-def claude_model(prompt:str):
+async def claude_model(prompt:str):
     message = client.messages.create(
         model='claude-3-5-sonnet-20240620',
         max_tokens=1000,

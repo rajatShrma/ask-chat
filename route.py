@@ -2,11 +2,12 @@ from fastapi import APIRouter, Body, Query
 from gemini_llm import gemini_model
 from claude_llm import claude_model
 from pydantic import BaseModel
+from typing import Any
 
 app_router=APIRouter()
 class PromptInput(BaseModel):
     system_input: str
-    prompt: str
+    prompt: Any
 
 @app_router.post('/gemini')
 async def gemini_chat(request_body: dict = Body(...)):
@@ -25,4 +26,6 @@ async def claude_chat(input: PromptInput):
         return {"error": "Missing prompt in request body"}
 
     response = await claude_model(system_input, prompt)
-    return {"data": response}
+    final_resonse = {"data": response}
+    final_resonse['data'] = final_resonse['data'].replace('\n', ' ')
+    return final_resonse
